@@ -1,7 +1,7 @@
 ---
 slug: simulation-cannot-see-a-cache
 title: A simulation can't see a cache
-date: 2026-09-21
+order: 1
 summary: My gateway's failure tests all passed. A routing rule I had added still cut prefix-cache hits from 59% to 24% on real engines.
 ---
 
