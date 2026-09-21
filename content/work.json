@@ -1,0 +1,57 @@
+[
+  {
+    "kind": "Serving",
+    "name": "RadixGates",
+    "question": "Can a small Go gateway keep an SGLang pool serving when a node dies, and does its prefix routing still help on a real engine?",
+    "figure": "85.2% → 99.7%",
+    "condition": "clean completions in a node-crash test, against the original gateway (4 simulated workers, 16 clients, 30 s)",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/radixgates"
+      }
+    ],
+    "note": "simulation-cannot-see-a-cache"
+  },
+  {
+    "kind": "Fine-tuning",
+    "name": "llm-finetune-lab",
+    "question": "Can a 0.5B model fine-tuned with LoRA answer questions about a database, on a laptop, without the data leaving it?",
+    "figure": "16.4%",
+    "condition": "of answers ran and returned the wrong rows (Q4_K_M, 391 held-out questions, scored by executing the SQL)",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/llm-finetune-lab"
+      }
+    ],
+    "note": "wrong-answers-that-raise-no-error"
+  },
+  {
+    "kind": "Storage",
+    "name": "cdc-chunker",
+    "question": "How fast can content-defined chunking run in C++17 without changing where the chunks are?",
+    "figure": "7.4 GB/s",
+    "condition": "on 8 threads, chunks identical to the sequential chunker (256 MiB in memory, 8 KiB average chunk, Apple M1)",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/cdc-chunker"
+      }
+    ],
+    "note": "same-weights-different-dtype"
+  },
+  {
+    "kind": "Tooling",
+    "name": "llm-serving-eval-kit",
+    "question": "Given a model and some GPUs, how many do you need, why did the server not start, and are two benchmark runs even comparable?",
+    "figure": "6 factors",
+    "condition": "differed between my RTX 4090 and A100 runs; the kit flags them instead of letting the comparison stand",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/llm-serving-eval-kit"
+      }
+    ]
+  }
+]
