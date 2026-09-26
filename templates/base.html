@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ lang }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% if page_title %}{{ page_title }} · {{ site.title }}{% else %}{{ site.title }}, {{ site.tagline | lower }}{% endif %}</title>
+<title>{% if page_title %}{{ page_title }} · {{ site.title }}{% else %}{{ site.title }} · {{ site.tagline }}{% endif %}</title>
 <meta name="description" content="{{ description }}">
 <link rel="canonical" href="{{ site.url }}{{ path }}">
+<link rel="alternate" hreflang="en" href="{{ site.url }}{{ alt_path if lang == 'zh' else path }}">
+<link rel="alternate" hreflang="zh" href="{{ site.url }}{{ alt_path if lang == 'en' else path }}">
 <meta property="og:type" content="{% if note is defined %}article{% else %}website{% endif %}">
 <meta property="og:title" content="{{ page_title or site.title }}">
 <meta property="og:description" content="{{ description }}">
@@ -15,23 +17,27 @@
 <meta name="theme-color" content="#0C141E" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/static/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/static/fonts/source-serif-4-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+{% if lang == "zh" %}<link rel="preload" href="/static/fonts/SourceHanSansCN-Regular.subset.woff2" as="font" type="font/woff2" crossorigin>
+{% else %}<link rel="preload" href="/static/fonts/source-serif-4-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+{% endif %}
 <script>
 try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t); } catch (e) {}
 </script>
 <link rel="stylesheet" href="/static/css/site.css">
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">{{ "跳到正文" if lang == "zh" else "Skip to content" }}</a>
 <header class="topbar">
   <div class="wrap topbar-inner">
-    <a class="brand" href="/">Yuchen He</a>
+    <a class="brand" href="{{ '/zh/' if lang == 'zh' else '/' }}">{{ "何雨宸" if lang == "zh" else "Yuchen He" }}</a>
     <nav aria-label="Main">
-      <a href="/#work"{% if path == "/work" %} aria-current="page"{% endif %}>Work</a>
-      {% if notes %}<a href="/notes/"{% if path.startswith("/notes") %} aria-current="page"{% endif %}>Notes</a>{% endif %}
-      <a href="/about/"{% if path == "/about/" %} aria-current="page"{% endif %}>About</a>
+      <a href="{{ ('/zh' if lang == 'zh' else '') + '/#work' }}">{{ nav.work }}</a>
+      <a href="{{ ('/zh' if lang == 'zh' else '') + '/#experience' }}">{{ nav.experience }}</a>
+      {% if notes %}<a href="/notes/"{% if path.startswith('/notes') %} aria-current="page"{% endif %}>{{ nav.notes }}</a>{% endif %}
+      <a href="{{ '/zh/about/' if lang == 'zh' else '/about/' }}"{% if path in ('/about/', '/zh/about/') %} aria-current="page"{% endif %}>{{ nav.about }}</a>
     </nav>
-    <button id="theme-toggle" class="theme" type="button" aria-label="Colour theme: system">System</button>
+    <a class="lang" href="{{ alt_path }}">{{ "EN" if lang == "zh" else "中文" }}</a>
+    <button id="theme-toggle" class="theme" type="button" aria-label="Colour theme: system">{{ "跟随系统" if lang == "zh" else "System" }}</button>
   </div>
 </header>
 <main id="main">
@@ -39,11 +45,12 @@ try { var t = localStorage.getItem("theme"); if (t === "light" || t === "dark") 
 </main>
 <footer class="foot">
   <div class="wrap foot-inner">
-    <p>© 2026 Yuchen He</p>
-    <p><a href="{{ site.github }}">GitHub</a> · <a href="{{ site.linkedin }}">LinkedIn</a> · <a href="mailto:{{ site.email }}">Email</a></p>
-    <p class="foot-note">Plain HTML and CSS, built by a short Python script. Set in Archivo, Source Serif 4 and JetBrains Mono (SIL Open Font License). Source on <a href="{{ site.github }}/yuchenhe985.github.io">GitHub</a>.</p>
+    <p>© 2026 {{ "何雨宸" if lang == "zh" else "Yuchen He" }}</p>
+    <p><a href="{{ site.github }}">GitHub</a> · <a href="{{ site.linkedin }}">LinkedIn</a> · <a href="mailto:{{ site.email }}">{{ "邮箱" if lang == "zh" else "Email" }}</a></p>
+    <p class="foot-note">{{ footer_note }} <a href="{{ site.github }}/yuchenhe985.github.io">{{ "源码" if lang == "zh" else "Source" }}</a>.</p>
   </div>
 </footer>
 <script src="/static/js/theme.js" defer></script>
+<script src="/static/js/motion.js" defer></script>
 </body>
 </html>

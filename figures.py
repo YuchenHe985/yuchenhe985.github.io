@@ -77,6 +77,32 @@ HIT_RATE_ROWS = [
     {"label": "Round-robin", "sub": "no gateway", "value": 22.0, "kind": "mute"},
 ]
 
+ROUTING_LABEL_ZH = "按路由策略划分的 prompt token 缓存命中率"
+
+# Same experiment as HIT_RATE_ROWS; row order and values must match exactly (see content/i18n.py's
+# RadixGates "judgment" text, which quotes 61.5% / 59.1% from this same dataset).
+HIT_RATE_ROWS_ZH = [
+    {"label": "原版", "sub": "按 hash % N 分配，满了就排队", "value": 59.1, "kind": "neutral"},
+    {"label": "满载溢出", "sub": "升级的第一条规则", "value": 24.4, "kind": "bad"},
+    {"label": "放置 + 等待", "sub": "最终方案", "value": 61.5, "kind": "good"},
+    {"label": "轮询", "sub": "不经过网关", "value": 22.0, "kind": "mute"},
+]
+
+FIGURES_ZH = {
+    "hit-rate-compact": lambda: hbars(
+        HIT_RATE_ROWS_ZH,
+        vmax=100,
+        ticks=(0, 25, 50, 75, 100),
+        unit="%",
+        label=ROUTING_LABEL_ZH,
+        compact=True,
+        caption=(
+            "三个 llama.cpp 实例跑在同一台 Apple M1 上，120 次请求复用六条共享 prompt，"
+            "缓存容量卡在槽位数，取 3 次运行的中位数。"
+        ),
+    ),
+}
+
 FIGURES = {
     "hit-rate": lambda: hbars(
         HIT_RATE_ROWS,
@@ -207,7 +233,8 @@ FIGURES = {
 }
 
 
-def render(name):
-    if name not in FIGURES:
+def render(name, lang="en"):
+    table = FIGURES_ZH if lang == "zh" and name in FIGURES_ZH else FIGURES
+    if name not in table:
         raise KeyError(f"unknown figure: {name}")
-    return FIGURES[name]()
+    return table[name]()

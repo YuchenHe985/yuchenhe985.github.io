@@ -5,13 +5,24 @@
     "question": "Can a small Go gateway keep an SGLang pool serving when a node dies, and does its prefix routing still help on a real engine?",
     "figure": "85.2% → 99.7%",
     "condition": "clean completions in a node-crash test, against the original gateway (4 simulated workers, 16 clients, 30 s)",
+    "stack": [
+      "Go",
+      "SGLang",
+      "llama.cpp",
+      "Docker",
+      "Prometheus"
+    ],
+    "measured": "Node-crash clean completions rose from 85.2% to 99.7% against the original, under the same injected faults; 55 tests added.",
+    "judgment": "On three real llama.cpp workers, the upgraded routing only matched the original's cache hit rate (61.5% vs. 59.1%), not beaten it — but cut the busiest worker's load share from 73% to 43%.",
+    "diagram": "radixgates",
     "links": [
       {
         "label": "Repository",
         "href": "https://github.com/YuchenHe985/radixgates"
       }
     ],
-    "note": "simulation-cannot-see-a-cache"
+    "note": "simulation-cannot-see-a-cache",
+    "featured": true
   },
   {
     "kind": "Fine-tuning",
@@ -19,6 +30,15 @@
     "question": "Can a 0.5B model fine-tuned with LoRA answer questions about a database, on a laptop, without the data leaving it?",
     "figure": "16.4%",
     "condition": "of answers ran and returned the wrong rows (Q4_K_M, 391 held-out questions, scored by executing the SQL)",
+    "stack": [
+      "PyTorch",
+      "PEFT",
+      "DDP",
+      "llama.cpp",
+      "SQLite"
+    ],
+    "measured": "Execution-correct answers rose from 42.7% to 82.6%; 16.4% ran cleanly but returned the wrong rows — invisible to a string-match check.",
+    "judgment": "Guardrails only got silent errors to 9.1%, short of the 5% target, so the call was a human-reviewed suggestion tool, not an autonomous answerer.",
     "links": [
       {
         "label": "Repository",
@@ -33,6 +53,13 @@
     "question": "How fast can content-defined chunking run in C++17 without changing where the chunks are?",
     "figure": "7.4 GB/s",
     "condition": "on 8 threads, chunks identical to the sequential chunker (256 MiB in memory, 8 KiB average chunk, Apple M1)",
+    "stack": [
+      "C++17",
+      "CMake",
+      "GitHub Actions"
+    ],
+    "measured": "About 2.0 GB/s on one thread, 7.4 GB/s on 8, output identical to sequential; 96.5% of bytes stayed reusable after 200 edits.",
+    "judgment": "A merged LoRA model reused only 27.6% of its bytes against its base — ship the adapter, not the merged model.",
     "links": [
       {
         "label": "Repository",
@@ -47,6 +74,9 @@
     "question": "Given a model and some GPUs, how many do you need, why did the server not start, and are two benchmark runs even comparable?",
     "figure": "6 factors",
     "condition": "differed between my RTX 4090 and A100 runs; the kit flags them instead of letting the comparison stand",
+    "stack": [
+      "Python"
+    ],
     "links": [
       {
         "label": "Repository",

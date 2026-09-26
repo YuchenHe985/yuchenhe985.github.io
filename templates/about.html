@@ -1,32 +1,51 @@
 {% extends "base.html" %}
 {% block main %}
 <section class="section wrap narrow-head">
-  <p class="eyebrow">About</p>
-  <h1 class="page-title">I’m Yuchen. I study electrical engineering and I write up what I measure.</h1>
+  <p class="eyebrow">{{ t.eyebrow }}</p>
+  <h1 class="page-title">{{ t.h1 }}</h1>
   <div class="about-grid">
     <div class="prose">
-      <p>I’m in the M.S.E. programme in Electrical Engineering at the University of Pennsylvania (2026–2028). Before that I did an honours dual degree in Computing and Commerce at Queen’s University (2022–2026), and in summer 2025 I was a big-data engineering intern on a logistics forecasting platform at Shopee, consolidating SQL jobs into a PySpark and Hive batch layer.</p>
-      <p>The work on this site sits between models and the machines that run them: how requests should be routed across GPUs, what happens to a small model when it is quantized to fit a laptop, how fast bytes can be chunked. This semester I am adding the other side: firmware on an ATmega328PB, SoC architecture on an Ultra96, and circuits in a VLSI course.</p>
+      <p>{{ t.p1 }}</p>
+      <p>{{ t.p2 }}</p>
 
-      <h2>How I approach a project</h2>
+      <h2>{{ t.h2_why }}</h2>
+      {% for para in t.why_build %}<p>{{ para }}</p>{% endfor %}
+
+      <h2>{{ t.h2_approach }}</h2>
       <ol class="principles">
-        <li><strong>Start from a decision.</strong> The text-to-SQL project asks whether a small model should ship as an autonomous answerer, and the answer is written as a decision, not as a score. {% for n in notes if n.slug == "wrong-answers-that-raise-no-error" %}<a href="{{ n.url }}">See the note.</a>{% endfor %}</li>
-        <li><strong>Write down the acceptance criteria, and say where they came from.</strong> Mine were assumptions, and the README says so.</li>
-        <li><strong>Report the condition with the number.</strong> “611 ms p95” means an Apple M1, one request at a time; with four in parallel it is 1.4 s.</li>
-        <li><strong>Say what would change the conclusion.</strong> Every repository ends with its limits, and the routing result turned on the size of a cache. {% for n in notes if n.slug == "simulation-cannot-see-a-cache" %}<a href="{{ n.url }}">See the note.</a>{% endfor %}</li>
+        <li>{{ t.principles[0] | safe }} {% for n in notes if n.slug == "wrong-answers-that-raise-no-error" %}<a href="{{ n.url }}">{{ t.see_note }}</a>{% endfor %}</li>
+        <li>{{ t.principles[1] | safe }}</li>
+        <li>{{ t.principles[2] | safe }}</li>
+        <li>{{ t.principles[3] | safe }} {% for n in notes if n.slug == "simulation-cannot-see-a-cache" %}<a href="{{ n.url }}">{{ t.see_note }}</a>{% endfor %}</li>
       </ol>
     </div>
-    <aside class="facts" aria-label="Facts">
+    <aside class="facts" aria-label="{{ t.facts_label }}">
       <dl>
-        <dt>Now</dt><dd>M.S.E. Electrical Engineering, Penn</dd>
-        <dt>Before</dt><dd>Honours dual degree in Computing and Commerce, Queen’s University</dd>
-        <dt>Looking for</dt><dd>Summer 2027 internships: AI infrastructure; embedded and hardware–software systems</dd>
-        <dt>Code</dt><dd><a href="{{ site.github }}">github.com/YuchenHe985</a></dd>
-        <dt>LinkedIn</dt><dd><a href="{{ site.linkedin }}">linkedin.com/in/yuchenhe-</a></dd>
-        <dt>Email</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd>
-        <dt>Based in</dt><dd>Philadelphia, PA</dd>
+        <dt>{{ t.f_now }}</dt><dd>{{ t.f_now_v }}</dd>
+        <dt>{{ t.f_before }}</dt><dd>{{ t.f_before_v }}</dd>
+        <dt>{{ t.f_looking }}</dt><dd>{{ t.f_looking_v }}</dd>
+        <dt>{{ t.f_code }}</dt><dd><a href="{{ site.github }}">github.com/YuchenHe985</a></dd>
+        <dt>{{ t.f_linkedin }}</dt><dd><a href="{{ site.linkedin }}">linkedin.com/in/yuchenhe-</a></dd>
+        <dt>{{ t.f_email }}</dt><dd><a href="mailto:{{ site.email }}">{{ site.email }}</a></dd>
+        <dt>{{ t.f_based }}</dt><dd>{{ t.f_based_v }}</dd>
       </dl>
     </aside>
+  </div>
+
+  <div class="outside">
+    <h2>{{ t.h2_outside }}</h2>
+    <p class="outside-lead">{{ t.outside_lead }}</p>
+    <ul class="hobbies">
+      {% for h in t.hobbies %}
+      <li class="hobby">
+        <img class="hobby-photo" src="/static/img/hobby-{{ h.icon }}.webp" width="800" height="600" alt="" loading="lazy">
+        <span class="hobby-label">{{ h.label }}</span>
+        {% if h.trait %}<span class="hobby-trait">{{ h.trait }}</span>{% endif %}
+        {% if h.note %}<span class="hobby-note">{{ h.note }}</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    {% if t.outside_close %}<p class="outside-close">{{ t.outside_close }}</p>{% endif %}
   </div>
 </section>
 {% endblock %}

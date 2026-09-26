@@ -2,32 +2,32 @@
 {% block main %}
 <section class="hero wrap">
   <div class="hero-copy">
-    <p class="eyebrow">Yuchen He · Electrical Engineering, Penn</p>
-    <h1>I measure the systems that serve models, and say what the numbers don’t show.</h1>
-    <p class="lead">I work on multi-GPU LLM serving, small models that run on a laptop, and C++ that moves bytes fast. I write up what I find, including where it stops holding.</p>
-    <p class="seeking">Looking for Summer 2027 internships in AI infrastructure and in embedded or hardware–software systems.</p>
+    <p class="eyebrow">{{ t.eyebrow }}</p>
+    <h1>{{ t.h1 | safe }}</h1>
+    <p class="lead">{{ t.lead }}</p>
+    <p class="seeking">{{ t.seeking }}</p>
     <p class="actions">
-      <a class="button" href="{{ site.github }}">See the code on GitHub</a>
-      <a class="text-link" href="mailto:{{ site.email }}">Email</a>
+      <a class="button" href="{{ site.github }}">{{ t.cta_code }}</a>
+      <a class="text-link" href="mailto:{{ site.email }}">{{ t.cta_email }}</a>
     </p>
   </div>
   <div class="hero-figure">
-    <h2 class="panel-title">A rule that looked harmless</h2>
+    <h2 class="panel-title">{{ t.panel_title }}</h2>
     <div class="panel">
       {{ hero_chart | safe }}
     </div>
-    {% if hero_note %}<p class="panel-link"><a href="{{ hero_note.url }}">What I took from it →</a></p>{% endif %}
+    {% if hero_note %}<p class="panel-link"><a href="{{ hero_note.url }}">{{ t.panel_link }}</a></p>{% endif %}
   </div>
 </section>
 
 <section id="work" class="section wrap">
-  <h2 class="section-title">Selected work</h2>
+  <h2 class="section-title">{{ t.work_title }}</h2>
   <ol class="work">
     {% for w in work %}
     <li class="work-row">
       <p class="kind">{{ w.kind }}</p>
       <div class="work-main">
-        <h3>{{ w.name }}</h3>
+        <h3>{{ w.name }}{% if w.featured %}<span class="badge">{{ t.featured_label }}</span>{% endif %}</h3>
         <p>{{ w.question }}</p>
       </div>
       <p class="readout">
@@ -37,19 +37,68 @@
       <p class="work-links">
         {% for l in w.links %}<a href="{{ l.href }}">{{ l.label }}</a>{% endfor %}
       </p>
+      {% if w.stack %}
+      <p class="tags">{% for s in w.stack %}<span class="tag">{{ s }}</span>{% endfor %}</p>
+      {% endif %}
+      {% if w.measured %}
+      <details class="evidence">
+        <summary>{{ t.evidence_label }}</summary>
+        <div class="evidence-body">
+          {% if w.name == "RadixGates" %}
+          <div class="diagram" role="img" aria-label="Client to gateway to three worker nodes, one with its circuit breaker open">
+            <span class="diagram-box">Client</span>
+            <span class="diagram-arrow">&#8594;</span>
+            <span class="diagram-box">Gateway</span>
+            <span class="diagram-arrow">&#8594;</span>
+            <span class="diagram-nodes">
+              <span class="diagram-node is-ok"><span class="diagram-dot"></span> Node A <small>{{ "健康" if lang == "zh" else "healthy" }}</small></span>
+              <span class="diagram-node is-open"><span class="diagram-dot"></span> Node B <small>{{ "熔断打开" if lang == "zh" else "circuit open" }}</small></span>
+              <span class="diagram-node is-ok"><span class="diagram-dot"></span> Node C <small>{{ "健康" if lang == "zh" else "healthy" }}</small></span>
+            </span>
+          </div>
+          {% endif %}
+          <div class="readout-pair">
+            <div class="readout-card is-measured">
+              <span class="readout-card-label">{{ t.measured_label }}</span>
+              <p>{{ w.measured }}</p>
+            </div>
+            <div class="readout-card is-judgment">
+              <span class="readout-card-label">{{ t.judgment_label }}</span>
+              <p>{{ w.judgment }}</p>
+            </div>
+          </div>
+        </div>
+      </details>
+      {% endif %}
     </li>
     {% endfor %}
   </ol>
 </section>
 
+<section id="experience" class="section wrap">
+  <h2 class="section-title">{{ t.exp_title }}</h2>
+  {% for e in experience %}
+  <div class="exp-entry">
+    <p class="exp-when">{{ e.when }}</p>
+    <div>
+      <p class="exp-role">{{ e.role }}</p>
+      <p class="exp-org">{{ e.org }}</p>
+      <p class="exp-where">{{ e.where }}</p>
+      <ul>{% for b in e.bullets %}<li>{{ b }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+  {% endfor %}
+</section>
+
 {% if notes %}
 <section class="section wrap">
-  <h2 class="section-title">Notes</h2>
+  <h2 class="section-title">{{ t.notes_title }}</h2>
+  {% if lang == "zh" %}<p class="chart-legend" style="margin:-0.6rem 0 1.2rem">{{ t.notes_lang_note }}</p>{% endif %}
   <ol class="posts">
-    {% for n in notes %}
+    {% for n in note_cards %}
     <li>
       <div>
-        <h3><a href="{{ n.url }}">{{ n.title }}</a></h3>
+        <h3><a href="{{ n.url }}">{{ n.title }}</a>{% if lang == "zh" %}<span class="note-tag">{{ t.note_en_tag }}</span>{% endif %}</h3>
         <p>{{ n.summary }}</p>
       </div>
     </li>
@@ -59,7 +108,7 @@
 {% endif %}
 
 <section class="section wrap now">
-  <h2 class="section-title">Now</h2>
-  <p>This semester at Penn: <strong>Smart Devices</strong> (bare-metal C on an ATmega328PB), <strong>SoC Architecture</strong> (profiling on an Ultra96) and <strong>Digital ICs and VLSI</strong>. <a href="/about/">More about me →</a></p>
+  <h2 class="section-title">{{ t.now_title }}</h2>
+  <p>{{ t.now_body | safe }} <a href="{{ '/zh/about/' if lang == 'zh' else '/about/' }}">{{ t.now_link }}</a></p>
 </section>
 {% endblock %}

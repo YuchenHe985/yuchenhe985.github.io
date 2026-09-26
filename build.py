@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Build the site into dist/.
+"""Build the site into dist/, in English at / and Chinese at /zh/.
 
     python3 build.py          # writes dist/
     python3 -m http.server -d dist 8000
 
-Notes are Markdown files in content/notes/ with a small front-matter block and are listed in the order given by
-`order`. A line containing only [[figure:name]] is replaced by a chart from figures.py.
+Notes (the long-form write-ups) are Markdown files in content/notes/ and are English-only; the
+Chinese pages link out to them with an "(EN)" label. A line containing only [[figure:name]] in a
+note is replaced by a chart from figures.py. Bilingual UI copy and translated project rows live in
+content/i18n.py. Hobby photos are static/img/hobby-*.webp (free-license stock, see static/img/CREDITS.md).
 """
 import json
 import re
@@ -17,6 +19,7 @@ import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 import figures
+from content.i18n import ABOUT, EXPERIENCE, FOOTER, HOME, NAV, NOT_FOUND, NOTES_ZH, WORK_ZH
 
 ROOT = Path(__file__).parent
 DIST = ROOT / "dist"
@@ -68,14 +71,41 @@ def load_notes():
     return notes
 
 
+def work_for(lang, by_slug):
+    """Project rows for one language: English as authored in work.json, Chinese overlaid from WORK_ZH."""
+    note_label = "Note" if lang == "en" else "笔记（英文）"
+    rows = []
+    for row in WORK:
+        row = dict(row)
+        if lang == "zh":
+            row.update(WORK_ZH.get(row["name"], {}))
+            row["links"] = [{"label": WORK_ZH[row["name"]]["repo_label"], "href": l["href"]} for l in row["links"]]
+        else:
+            row["links"] = list(row["links"])
+        if row.get("note") and row["note"] in by_slug:
+            row["links"].append({"label": note_label, "href": by_slug[row["note"]]["url"]})
+        rows.append(row)
+    return rows
+
+
+def note_cards_for(lang, notes):
+    """Cards for the home page: Chinese title and summary on /zh/ (the notes themselves stay English)."""
+    if lang == "en":
+        return notes
+    return [dict(n, **NOTES_ZH[n["slug"]]) if n["slug"] in NOTES_ZH else n for n in notes]
+
+
 def write(rel, content):
     target = DIST / rel
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(content, encoding="utf-8")
 
 
-def page(template, rel, **ctx):
+def page(template, rel, lang, **ctx):
     ctx.setdefault("site", SITE)
+    ctx["lang"] = lang
+    ctx["nav"] = NAV[lang]
+    ctx["footer_note"] = FOOTER[lang]["note"]
     write(rel, env.get_template(template).render(**ctx))
 
 
@@ -87,29 +117,38 @@ def main():
 
     notes = load_notes()
     by_slug = {n["slug"]: n for n in notes}
-    # A project row links to its note when there is one.
-    work = []
-    for row in WORK:
-        links = [l for l in row["links"] if "href" in l]
-        if row.get("note") and row["note"] in by_slug:
-            links.append({"label": "Note", "href": by_slug[row["note"]]["url"]})
-        work.append({**row, "links": links})
     hero_note = by_slug.get("simulation-cannot-see-a-cache")
 
-    page("home.html", "index.html", notes=notes, work=work, hero_chart=figures.render("hit-rate-compact"),
-         hero_note=hero_note, path="/", page_title=None, description=SITE["description"])
-    page("about.html", "about/index.html", notes=notes, path="/about/", page_title="About",
-         description="Master's student in Electrical Engineering at Penn. How I approach a project, and how to reach me.")
-    if notes:
-        page("notes.html", "notes/index.html", notes=notes, path="/notes/", page_title="Notes",
-             description="Short notes on what a measurement taught me.")
-    for i, note in enumerate(notes):
-        page("note.html", f"notes/{note['slug']}/index.html", note=note, newer=notes[i - 1] if i > 0 else None,
-             older=notes[i + 1] if i + 1 < len(notes) else None, notes=notes, path=note["url"],
-             page_title=note["title"], description=note["summary"])
-    page("404.html", "404.html", notes=notes, path="/404.html", page_title="Not found", description="This page does not exist.")
+    for lang, prefix in (("en", ""), ("zh", "/zh")):
+        page(
+            "home.html", f"{prefix}/index.html".lstrip("/"), lang,
+            t=HOME[lang], work=work_for(lang, by_slug), notes=notes, note_cards=note_cards_for(lang, notes),
+            experience=EXPERIENCE[lang],
+            hero_chart=figures.render("hit-rate-compact", lang=lang), hero_note=hero_note,
+            path=f"{prefix}/", alt_path=("/" if lang == "zh" else "/zh/"),
+            page_title=None, description=SITE["description"] if lang == "en" else SITE["description_zh"],
+        )
+        page(
+            "about.html", f"{prefix}/about/index.html".lstrip("/"), lang,
+            t=ABOUT[lang], notes=notes,
+            path=f"{prefix}/about/", alt_path=("/about/" if lang == "zh" else "/zh/about/"),
+            page_title=ABOUT[lang]["eyebrow"], description=f'{ABOUT[lang]["h1"]} {ABOUT[lang]["f_looking_v"]}',
+        )
 
-    urls = ["/", "/about/"] + (["/notes/"] if notes else []) + [n["url"] for n in notes]
+    # Notes stay English-only: substantial technical write-ups, not yet translated.
+    if notes:
+        page("notes.html", "notes/index.html", "en", notes=notes, path="/notes/", alt_path="/zh/",
+             page_title="Notes", description="Short notes on what a measurement taught me.")
+    for i, note in enumerate(notes):
+        page(
+            "note.html", f"notes/{note['slug']}/index.html", "en", note=note,
+            newer=notes[i - 1] if i > 0 else None, older=notes[i + 1] if i + 1 < len(notes) else None,
+            notes=notes, path=note["url"], alt_path="/zh/", page_title=note["title"], description=note["summary"],
+        )
+    page("404.html", "404.html", "en", t=NOT_FOUND["en"], notes=notes, path="/404.html", alt_path="/zh/",
+         page_title="Not found", description="This page does not exist.")
+
+    urls = ["/", "/zh/", "/about/", "/zh/about/"] + (["/notes/"] if notes else []) + [n["url"] for n in notes]
     write(
         "sitemap.xml",
         '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
@@ -117,7 +156,7 @@ def main():
         + "</urlset>",
     )
     write("robots.txt", f"User-agent: *\nAllow: /\nSitemap: {SITE['url']}/sitemap.xml\n")
-    print(f"built {len(notes)} notes into {DIST}")
+    print(f"built {len(notes)} notes into {DIST}, in English and Chinese")
 
 
 if __name__ == "__main__":
