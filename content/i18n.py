@@ -44,7 +44,7 @@ HOME = {
         "evidence_label": "看实测数据",
         "measured_label": "实测",
         "judgment_label": "判断",
-        "exp_title": "实习经历",
+        "exp_title": "经历",
         "notes_title": "笔记",
         "now_title": "现在",
         "now_body": "这学期在宾大修：<strong>Smart Devices</strong>（ATmega328PB 裸机 C）、<strong>SoC 架构</strong>（在 Ultra96 上做性能剖析）、<strong>数字集成电路与 VLSI</strong>。",
@@ -78,7 +78,7 @@ WORK_ZH = {
         "condition": "8 线程下的吞吐，分块结果和单线程逐字节一致（256MiB 内存数据，平均块大小 8KiB，Apple M1）",
         "repo_label": "仓库",
         "stack": ["C++17", "CMake", "GitHub Actions"],
-        "measured": "单线程约 2.0 GB/s，8 线程 7.4 GB/s，输出和单线程完全一致；200 次编辑后仍有 96.5% 的字节可复用。",
+        "measured": "单线程约 2.0 GB/s，8 线程 7.4 GB/s，输出和单线程完全一致；67 MB 源码树经 200 次编辑后，仍有 96.5% 的字节可复用。",
         "judgment": "合并 LoRA 权重后的模型文件只有 27.6% 的字节能复用——该分发的是 LoRA adapter，而不是合并后的完整模型。",
     },
     "llm-serving-eval-kit": {
@@ -99,8 +99,9 @@ EXPERIENCE = {
             "when": "Jun – Sep 2025",
             "where": "Shenzhen, China",
             "bullets": [
-                "Consolidated 10+ SQL jobs into a dependency-aware PySpark/Spark SQL batch layer on Hive, cutting end-to-end runtime about 40%.",
-                "Unified algorithm and regional forecasting schemas into one model; partitioning and predicate pushdown cut scanned data per query about 60%.",
+                "Consolidated 10+ SQL jobs into a dependency-aware PySpark/Spark SQL batch layer on Hive, standardizing incremental and snapshot patterns and cutting end-to-end runtime by about 40%.",
+                "Unified algorithm and regional forecasting schemas into a compute-once, multi-consume model; partitioning and predicate pushdown cut scanned data per query by about 60%.",
+                "Built WMAPE model-version dashboards and automated checks for null rate, volume drift and freshness; investigated pipeline and data-quality anomalies with algorithm and operations teams.",
             ],
         },
         {
@@ -119,7 +120,7 @@ EXPERIENCE = {
             "when": "Jun – Sep 2024",
             "where": "Beijing, China",
             "bullets": [
-                "Supported IPO diligence, valuation materials, and disclosure cross-checks — tracing a conclusion back to its evidence, a habit that now carries into how I write up benchmarks.",
+                "Supported IPO due diligence, valuation materials and disclosure cross-checks — tracing a conclusion back to its evidence, a habit that now carries into how I write up benchmarks.",
             ],
         },
         {
@@ -140,8 +141,9 @@ EXPERIENCE = {
             "when": "2025.06 – 09",
             "where": "深圳",
             "bullets": [
-                "将 10+ 个独立 SQL 作业整合为基于依赖调度的 PySpark / Spark SQL（Hive）批处理链路，端到端耗时降低约 40%。",
+                "将 10+ 个独立 SQL 作业整合为基于依赖调度的 PySpark / Spark SQL（Hive）批处理链路，统一增量与全量快照的处理模式，端到端耗时降低约 40%。",
                 "统一算法侧与区域侧的预测数据表结构，整合为“一次计算、多方复用”的数据模型；通过分区与谓词下推，单次查询扫描数据量减少约 60%。",
+                "搭建按 WMAPE 对比模型版本的看板，并配套空值率、数据量波动、时效性等自动化校验；与算法、运营团队联合排查链路和数据异常。",
             ],
         },
         {
@@ -155,7 +157,7 @@ EXPERIENCE = {
             ],
         },
         {
-            "role": "投资分析实习生",
+            "role": "投资分析师",
             "org": "中信证券",
             "when": "2024.06 – 09",
             "where": "中国北京",

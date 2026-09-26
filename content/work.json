@@ -13,7 +13,7 @@
       "Prometheus"
     ],
     "measured": "Node-crash clean completions rose from 85.2% to 99.7% against the original, under the same injected faults; the test suite now has 55 tests.",
-    "judgment": "On three real llama.cpp workers, the upgraded routing only matched the original's cache hit rate (61.5% vs. 59.1%), not beaten it — but cut the busiest worker's load share from 73% to 43%.",
+    "judgment": "On three real llama.cpp workers, the upgraded routing matched the original's cache hit rate (61.5% vs. 59.1%) rather than beating it, but cut the busiest worker's share of the prefill work from 73% to 43%.",
     "diagram": "radixgates",
     "links": [
       {
@@ -38,7 +38,7 @@
       "SQLite"
     ],
     "measured": "Execution-correct answers rose from 42.7% to 82.6%; 16.4% ran cleanly but returned the wrong rows — invisible to a string-match check.",
-    "judgment": "Guardrails only got silent errors to 9.1%, short of the 5% target, so the call was a human-reviewed suggestion tool, not an autonomous answerer.",
+    "judgment": "Guardrails only brought silent errors down to 9.1%, short of the 5% target, so the call was a human-reviewed suggestion tool, not an autonomous answerer.",
     "links": [
       {
         "label": "Repository",
@@ -58,7 +58,7 @@
       "CMake",
       "GitHub Actions"
     ],
-    "measured": "About 2.0 GB/s on one thread, 7.4 GB/s on 8, output identical to sequential; 96.5% of bytes stayed reusable after 200 edits.",
+    "measured": "About 2.0 GB/s on one thread, 7.4 GB/s on 8, output identical to sequential; 96.5% of a 67 MB source tree stayed reusable after 200 edits.",
     "judgment": "A merged LoRA model reused only 27.6% of its bytes against its base — ship the adapter, not the merged model.",
     "links": [
       {

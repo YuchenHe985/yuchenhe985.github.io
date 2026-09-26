@@ -2,7 +2,7 @@
 slug: simulation-cannot-see-a-cache
 title: A simulation can't see a cache
 order: 1
-summary: My gateway's failure tests all passed. A routing rule I had added still cut prefix-cache hits from 59% to 24% on real engines.
+summary: My gateway's failure tests all passed. A routing rule I had added still cut prefix-cache hits from 59.1% to 24.4% on real engines.
 ---
 
 My gateway's failure benchmarks all passed. They use simulated workers, and a simulated worker has no KV cache, so they could not tell me that a routing rule I had added was bad.
@@ -11,7 +11,7 @@ The rule: when a request's preferred node is full, spill to the next-ranked one.
 
 [[figure:hit-rate]]
 
-Spilling scattered each prefix over several nodes and evicted it from all of them. The original gateway, which just queues, kept 59% of its prompt tokens in cache, but sent three quarters of the prefill work to one worker. Placement memory plus a bounded affinity wait matched the original's hit rate (61.5% against 59.1%, indistinguishable over three runs) and spread the work: the busiest worker's share went from 73% to 43%. That is parity on cache hits, not a win.
+Spilling scattered each prefix over several nodes and evicted it from all of them. The original gateway, which just queues, kept 59.1% of its prompt tokens in cache, but sent three quarters of the prefill work to one worker. Placement memory plus a bounded affinity wait matched the original's hit rate (61.5% against 59.1%, indistinguishable over three runs) and spread the work: the busiest worker's share went from 73% to 43%. That is parity on cache hits, not a win.
 
 What I took from it: a simulation only tests what you put in it. The failure I cared about lived in the piece I had left out, so after any simulated result the next step is the smallest real system that contains that piece. And the fix is off by default, because with llama.cpp's own host-memory cache every policy reaches 95 to 98% and routing barely matters.
 
