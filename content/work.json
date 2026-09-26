@@ -12,7 +12,7 @@
       "Docker",
       "Prometheus"
     ],
-    "measured": "Node-crash clean completions rose from 85.2% to 99.7% against the original, under the same injected faults; 55 tests added.",
+    "measured": "Node-crash clean completions rose from 85.2% to 99.7% against the original, under the same injected faults; the test suite now has 55 tests.",
     "judgment": "On three real llama.cpp workers, the upgraded routing only matched the original's cache hit rate (61.5% vs. 59.1%), not beaten it — but cut the busiest worker's load share from 73% to 43%.",
     "diagram": "radixgates",
     "links": [

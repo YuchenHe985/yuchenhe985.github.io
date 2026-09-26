@@ -1,7 +1,7 @@
 """Figures for the site: plain HTML and CSS bars, drawn to one scale per chart.
 
 Every number here is copied from a published result in one of the repositories named in the captions.
-Charts are HTML rather than SVG so their text reflows and scales with the page and takes its colours
+Charts are HTML rather than SVG so their text reflows and scales with the page and takes its colors
 from the theme tokens in site.css.
 """
 from html import escape
@@ -77,7 +77,7 @@ HIT_RATE_ROWS = [
     {"label": "Round-robin", "sub": "no gateway", "value": 22.0, "kind": "mute"},
 ]
 
-ROUTING_LABEL_ZH = "按路由策略划分的 prompt token 缓存命中率"
+ROUTING_LABEL_ZH = "各路由策略下，prompt token 命中 KV cache 的占比"
 
 # Same experiment as HIT_RATE_ROWS; row order and values must match exactly (see content/i18n.py's
 # RadixGates "judgment" text, which quotes 61.5% / 59.1% from this same dataset).
@@ -89,6 +89,68 @@ HIT_RATE_ROWS_ZH = [
 ]
 
 FIGURES_ZH = {
+    "hit-rate": lambda: hbars(
+        HIT_RATE_ROWS_ZH,
+        vmax=100,
+        ticks=(0, 25, 50, 75, 100),
+        unit="%",
+        label=ROUTING_LABEL_ZH,
+        caption=(
+            "各路由策略下，从 KV cache 读取的 prompt token 占比。三个 llama.cpp 实例（Qwen2.5-0.5B，每个两个槽位）跑在一台 Apple M1 上；"
+            "120 个请求，围绕六条共享的长 prompt；缓存容量限制在槽位数；每次运行前清空缓存；取三次运行的中位数。"
+            "来源：radixgates，<code>benchmarks/results/real_engine_limited_cache/</code>。"
+        ),
+    ),
+    "outcomes": lambda: stacks(
+        [
+            {
+                "label": "Qwen2.5-0.5B-Instruct，未微调（Q4_K_M）",
+                "parts": [("正确", 42.7, "good"), ("能运行，结果错误", 41.9, "bad"), ("无法运行", 15.3, "mute")],
+            },
+            {
+                "label": "LoRA 微调后（Q4_K_M）",
+                "parts": [("正确", 82.6, "good"), ("能运行，结果错误", 16.4, "bad"), ("无法运行", 1.0, "mute")],
+            },
+        ],
+        label="每条生成的查询最终怎么样",
+        caption=(
+            "391 道留出测试题（来自 b-mc2/sql-create-context），每一道都在三个生成的 SQLite 数据库上执行模型生成的 SQL，并把结果行与参考查询比对。"
+            "来源：llm-finetune-lab，<code>results/</code>。"
+        ),
+    ),
+    "shared-with-base": lambda: hbars(
+        [
+            {"label": "safetensors（按发布时的原样）", "sub": "基础模型 BF16，微调模型 F16", "value": 0.0, "kind": "bad"},
+            {"label": "safetensors，两者都转为 F16", "value": 27.6, "kind": "neutral"},
+            {"label": "GGUF F16", "value": 28.0, "kind": "neutral"},
+            {"label": "GGUF Q8_0", "value": 28.3, "kind": "neutral"},
+            {"label": "GGUF Q4_K_M", "value": 37.8, "kind": "neutral"},
+        ],
+        vmax=100,
+        ticks=(0, 25, 50, 75, 100),
+        unit="%",
+        label="微调后的文件中，能在基础模型文件的块里找到的比例",
+        caption=(
+            "Gear 分块器，采用 Xet 的限制（最小 8 KiB、平均 64 KiB、最大 128 KiB）。基础模型：Qwen2.5-0.5B-Instruct；微调模型：在所有注意力和 MLP 投影上做 "
+            "rank-16 LoRA，合并后保存为 fp16。来源：cdc-chunker README，“Deduplication of model files”。"
+        ),
+    ),
+    "loss-per-edit": lambda: hbars(
+        [
+            {"label": "Rabin", "sub": "CV 0.80", "value": 24.1, "kind": "neutral", "mark": 18.7},
+            {"label": "Gear", "sub": "CV 0.79", "value": 20.1, "kind": "neutral", "mark": 17.8},
+            {"label": "Gear，归一化", "sub": "CV 0.30", "value": 11.8, "kind": "good", "mark": 10.7},
+        ],
+        vmax=30,
+        ticks=(0, 10, 20, 30),
+        unit="KB",
+        label="8 KiB 平均块大小下，每次修改产生的新字节",
+        mark_label="公式预测：均值 × (1 + CV²)",
+        caption=(
+            "对一棵 67 MB 的源码树做 200 次随机修改后，新版本文件中在旧版本里找不到的字节数（每次修改）。定长 8 KiB 块每次修改丢失 330 KB，"
+            "超出这张图的刻度。来源：cdc-chunker README，“Deduplication after edits”。"
+        ),
+    ),
     "hit-rate-compact": lambda: hbars(
         HIT_RATE_ROWS_ZH,
         vmax=100,
@@ -233,7 +295,10 @@ FIGURES = {
 }
 
 
-def render(name, lang="en"):
+def render(name, lang="en", strict=False):
+    """Chart HTML in one language. With strict=True a missing Chinese version is an error, not a silent English fallback."""
+    if strict and lang == "zh" and name not in FIGURES_ZH:
+        raise KeyError(f"no Chinese version of figure: {name}")
     table = FIGURES_ZH if lang == "zh" and name in FIGURES_ZH else FIGURES
     if name not in table:
         raise KeyError(f"unknown figure: {name}")

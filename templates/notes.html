@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block main %}
 <section class="section wrap narrow-head">
-  <p class="eyebrow">Notes</p>
-  <h1 class="page-title">What a measurement taught me</h1>
-  <p class="lead">Short notes on one thing each. The tables, raw data and limits are in the repositories they link to.</p>
+  <p class="eyebrow">{{ tn.eyebrow }}</p>
+  <h1 class="page-title">{{ tn.h1 }}</h1>
+  <p class="lead">{{ tn.lead }}</p>
   <ol class="posts posts--page">
     {% for n in notes %}
     <li>

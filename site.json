@@ -7,5 +7,7 @@
   "github": "https://github.com/YuchenHe985",
   "description": "Yuchen He builds and measures the systems that run AI models, from multi-GPU serving to small local models, and writes down what the numbers do and do not show.",
   "description_zh": "何雨宸的个人网站：AI 推理系统、本地模型、系统性能，以及正在深入的嵌入式与硬件方向。项目之外，也记录数据能说明什么、不能说明什么。",
-  "linkedin": "https://www.linkedin.com/in/yuchenhe-"
+  "linkedin": "https://www.linkedin.com/in/yuchenhe-",
+  "title_zh": "何雨宸",
+  "tagline_zh": "AI 背后的系统，用实测说话"
 }

@@ -2,7 +2,7 @@
 {% block main %}
 <article class="post">
   <header class="wrap post-head">
-    <p class="eyebrow"><a href="/notes/">Notes</a></p>
+    <p class="eyebrow"><a href="{{ '/zh/notes/' if lang == 'zh' else '/notes/' }}">{{ tn.eyebrow }}</a></p>
     <h1 class="page-title">{{ note.title }}</h1>
     <p class="lead">{{ note.summary }}</p>
   </header>
@@ -10,9 +10,9 @@
     {{ note.html | safe }}
   </div>
   {% if newer or older %}
-  <nav class="wrap post-nav" aria-label="More notes">
-    {% if newer %}<a href="{{ newer.url }}"><span>Newer</span>{{ newer.title }}</a>{% else %}<span></span>{% endif %}
-    {% if older %}<a href="{{ older.url }}"><span>Older</span>{{ older.title }}</a>{% else %}<span></span>{% endif %}
+  <nav class="wrap post-nav" aria-label="{{ tn.more }}">
+    {% if newer %}<a href="{{ newer.url }}"><span>{{ tn.newer }}</span>{{ newer.title }}</a>{% else %}<span></span>{% endif %}
+    {% if older %}<a href="{{ older.url }}"><span>{{ tn.older }}</span>{{ older.title }}</a>{% else %}<span></span>{% endif %}
   </nav>
   {% endif %}
 </article>

@@ -38,7 +38,7 @@
 }
 @font-face {
   font-family: "Source Han Sans CN";
-  src: url("/static/fonts/SourceHanSansCN-Medium.subset.woff2") format("woff2");
+  src: url("/static/fonts/SourceHanSansCN-Bold.subset.woff2") format("woff2");
   font-weight: 600 900;
   font-display: swap;
 }
@@ -273,16 +273,6 @@ h1, h2, h3 { font-family: var(--f-ui); text-wrap: balance; margin: 0; }
   border: 1px solid var(--accent);
   border-radius: 2px;
   padding: 0.12rem 0.42rem;
-}
-.note-tag {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 0.6rem;
-  font: 500 0.68rem var(--f-mono);
-  color: var(--muted);
-  border: 1px solid var(--line-strong);
-  border-radius: 2px;
-  padding: 0.08rem 0.4rem;
 }
 .work-main h3 { font-size: 1.4rem; font-weight: 650; font-stretch: 106%; letter-spacing: -0.015em; margin-bottom: 0.4rem; }
 .work-main p { color: var(--ink-2); max-width: 34rem; }

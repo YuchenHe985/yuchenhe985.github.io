@@ -93,12 +93,11 @@
 {% if notes %}
 <section class="section wrap">
   <h2 class="section-title">{{ t.notes_title }}</h2>
-  {% if lang == "zh" %}<p class="chart-legend" style="margin:-0.6rem 0 1.2rem">{{ t.notes_lang_note }}</p>{% endif %}
   <ol class="posts">
-    {% for n in note_cards %}
+    {% for n in notes %}
     <li>
       <div>
-        <h3><a href="{{ n.url }}">{{ n.title }}</a>{% if lang == "zh" %}<span class="note-tag">{{ t.note_en_tag }}</span>{% endif %}</h3>
+        <h3><a href="{{ n.url }}">{{ n.title }}</a></h3>
         <p>{{ n.summary }}</p>
       </div>
     </li>

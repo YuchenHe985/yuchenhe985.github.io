@@ -11,7 +11,7 @@
   function show() {
     var name = current();
     button.textContent = name.charAt(0).toUpperCase() + name.slice(1);
-    button.setAttribute("aria-label", "Colour theme: " + name + ". Activate to change.");
+    button.setAttribute("aria-label", "Color theme: " + name + ". Activate to change.");
   }
   button.addEventListener("click", function () {
     var next = order[(order.indexOf(current()) + 1) % order.length];

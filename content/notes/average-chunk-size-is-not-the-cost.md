@@ -9,7 +9,7 @@ An edit destroys the chunk it lands in, and a random edit is more likely to land
 
 [[figure:loss-per-edit]]
 
-Normalized chunking narrows the spread from 0.80 to 0.30 and cuts the data lost per edit by about 40%, from 20.1 KB to 11.8 KB at an 8 KiB target. The formula predicts 10.7 KB against 11.8 measured for normalized Gear, and 18.7 against 24.1 for Rabin: the right order, and low, probably because an edit near a boundary also disturbs its neighbour. Fixed blocks lose 330 KB per edit and are off the chart.
+Normalized chunking narrows the spread from 0.80 to 0.30 and cuts the data lost per edit by about 40%, from 20.1 KB to 11.8 KB at an 8 KiB target. The formula predicts 10.7 KB against 11.8 measured for normalized Gear, and 18.7 against 24.1 for Rabin: the right order, and low, probably because an edit near a boundary also disturbs its neighbor. Fixed blocks lose 330 KB per edit and are off the chart.
 
 What I took from it: when two designs have similar averages, ask which quantity the cost really depends on. Here it was the second moment, not the mean.
 

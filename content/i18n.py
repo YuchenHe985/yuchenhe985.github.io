@@ -29,12 +29,11 @@ HOME = {
         "now_title": "Now",
         "now_body": "This semester at Penn: <strong>Smart Devices</strong> (bare-metal C on an ATmega328PB), <strong>SoC Architecture</strong> (profiling on an Ultra96) and <strong>Digital ICs and VLSI</strong>.",
         "now_link": "More about me →",
-        "notes_lang_note": "Notes are written in English.",
         "featured_label": "Start here",
     },
     "zh": {
         "eyebrow": "何雨宸 · 宾夕法尼亚大学电子工程",
-        "h1": "我构建、测量让 AI 模型跑起来的系统，也追问数字没有说明的部分。",
+        "h1": "我搭建、测量让 AI 模型跑起来的系统，并说清楚数字没能说明的部分。",
         "lead": "我关注 AI 系统，以及软件和硬件交界的地方：多 GPU 推理、本地模型、系统代码，这学期开始学固件和 SoC。相比只把东西跑通，我更喜欢往里多追一层，弄清楚到底是什么决定了它的表现。",
         "seeking": "正在找 2027 年暑期实习，方向是 AI 基础设施，或者嵌入式 / 软硬件系统。",
         "cta_code": "在 GitHub 上看代码",
@@ -48,23 +47,21 @@ HOME = {
         "exp_title": "实习经历",
         "notes_title": "笔记",
         "now_title": "现在",
-        "now_body": "这学期在宾大：<strong>智能设备</strong>（ATmega328PB 裸机 C 开发）、<strong>SoC 架构</strong>（Ultra96 性能剖析）、<strong>数字集成电路与 VLSI</strong>。",
+        "now_body": "这学期在宾大修：<strong>Smart Devices</strong>（ATmega328PB 裸机 C）、<strong>SoC 架构</strong>（在 Ultra96 上做性能剖析）、<strong>数字集成电路与 VLSI</strong>。",
         "now_link": "更多关于我 →",
-        "notes_lang_note": "每篇文章的全文目前只有英文版。",
         "featured_label": "先看这个",
-        "note_en_tag": "英文全文",
     },
 }
 
 WORK_ZH = {
     "RadixGates": {
         "kind": "推理服务",
-        "question": "节点挂掉时，一个小小的 Go 网关能不能撑住 SGLang 集群？它的前缀路由（prefix routing）在真实引擎上是否还有用？",
-        "condition": "节点崩溃测试中的完整请求成功率，相比原始网关（4 个模拟节点，16 个客户端，30 秒）",
+        "question": "节点挂掉后，一个轻量的 Go 网关还能不能让 SGLang 集群持续对外服务？它的 prefix 路由放到真实推理引擎上还有没有用？",
+        "condition": "节点崩溃测试中无错误完成的请求占比，对比原始网关（4 个模拟节点、16 个并发客户端、30 s）",
         "repo_label": "仓库",
         "stack": ["Go", "SGLang", "llama.cpp", "Docker", "Prometheus"],
-        "measured": "相同故障注入条件下，节点崩溃场景的成功率从 85.2% 提升到 99.7%，新增 55 个测试。",
-        "judgment": "在三个真实 llama.cpp 实例上，升级后的路由只是恢复到和原版一样的缓存命中率（61.5% 对 59.1%），不是超越——但把最忙节点的负载占比从 73% 降到了 43%。",
+        "measured": "相同故障注入条件下，节点崩溃场景的请求成功率由 85.2% 提升到 99.7%；测试用例增至 55 个（go test -race）。",
+        "judgment": "在 3 个真实 llama.cpp 实例上，升级后的路由策略只是把 prefix cache 命中率恢复到与原版持平（61.5% 对 59.1%），并没有超越；但最忙节点的 prefill 占比从 73% 降到了 43%。",
     },
     "llm-finetune-lab": {
         "kind": "模型微调",
@@ -72,22 +69,23 @@ WORK_ZH = {
         "condition": "能正常执行但返回错误结果的比例（Q4_K_M 量化，391 道留出测试题，按执行结果打分）",
         "repo_label": "仓库",
         "stack": ["PyTorch", "PEFT", "DDP", "llama.cpp", "SQLite"],
-        "measured": "执行正确率从 42.7% 提升到 82.6%；但有 16.4% 的答案能跑通却返回错误结果，字符串匹配根本发现不了。",
-        "judgment": "护栏机制只能把静默错误率压到 9.1%，没达到 5% 的目标，所以结论是做成人工复核的建议工具，而不是自主作答系统。",
+        "measured": "执行准确率从 42.7% 提升到 82.6%；但有 16.4% 的答案能执行却返回错误结果，只看字符串匹配根本发现不了。",
+        "judgment": "加上护栏后，静默错误率也只降到 9.1%，仍没达到 5% 的目标线，所以结论是做成人工复核的建议工具，而不是自主作答系统。",
     },
     "cdc-chunker": {
         "kind": "存储",
-        "question": "C++17 写的内容定义分块（content-defined chunking），能跑多快，同时保证分块结果不因为多线程而改变？",
+        "question": "用 C++17 实现的内容定义分块（CDC）能跑多快？上了多线程之后，分块结果还能和单线程完全一致吗？",
         "condition": "8 线程下的吞吐，分块结果和单线程逐字节一致（256MiB 内存数据，平均块大小 8KiB，Apple M1）",
         "repo_label": "仓库",
         "stack": ["C++17", "CMake", "GitHub Actions"],
         "measured": "单线程约 2.0 GB/s，8 线程 7.4 GB/s，输出和单线程完全一致；200 次编辑后仍有 96.5% 的字节可复用。",
-        "judgment": "合并 LoRA 权重后的模型文件只有 27.6% 的字节能复用——该分发的是适配器，不是合并后的完整模型。",
+        "judgment": "合并 LoRA 权重后的模型文件只有 27.6% 的字节能复用——该分发的是 LoRA adapter，而不是合并后的完整模型。",
     },
     "llm-serving-eval-kit": {
         "kind": "工具",
-        "question": "给定一个模型和几张 GPU，到底需要几张？服务启动失败是为什么？两次基准测试真的能比吗？",
-        "condition": "在我的 RTX 4090 和 A100 两组实验之间不一致的因素，工具没有放任这个对比成立",
+        "question": "给定一个模型，需要几张 GPU？服务启动失败是什么原因？两次 benchmark 的结果真的可比吗？",
+        "figure": "6 项因素",
+        "condition": "我的 RTX 4090 与 A100 两组实验之间存在差异；工具会逐项标出，而不是让这次对比直接成立",
         "repo_label": "仓库",
         "stack": ["Python"],
     },
@@ -112,7 +110,7 @@ EXPERIENCE = {
             "where": "Canada",
             "bullets": [
                 "Built an Excel VBA and Power Query analytics workflow for 10,000+ case records — rule-based deduplication, open/closed/reopened status classification and automated aggregation — improving reporting speed about 25%.",
-                "Analysed three years of sales data from 1,000+ retail stores in MySQL, surfacing seasonal patterns and margin peaks, and built Power BI dashboards broken down by store, vendor and manager.",
+                "Analyzed three years of sales data from 1,000+ retail stores in MySQL, surfacing seasonal patterns and margin peaks, and built Power BI dashboards broken down by store, vendor and manager.",
             ],
         },
         {
@@ -131,7 +129,7 @@ EXPERIENCE = {
             "where": "Beijing, China",
             "bullets": [
                 "Turned recurring market, industry, and ESG research into refreshable Power Query and VBA workflows; building the tool turned out to be as interesting as the analysis itself.",
-                "Modelled multi-source financial and market data in Excel and Wind for KPI benchmarking and trend analysis, including multi-period ROE, margin and leverage analysis.",
+                "Modeled multi-source financial and market data in Excel and Wind for KPI benchmarking and trend analysis, including multi-period ROE, margin and leverage analysis.",
             ],
         },
     ],
@@ -139,11 +137,11 @@ EXPERIENCE = {
         {
             "role": "大数据开发实习生",
             "org": "虾皮物流网络科技有限公司（Shopee）",
-            "when": "2025.06 – 2025.09",
-            "where": "中国深圳",
+            "when": "2025.06 – 09",
+            "where": "深圳",
             "bullets": [
-                "把 10 多个独立 SQL 任务整合为一套基于依赖关系调度的 PySpark / Spark SQL on Hive 批处理层，端到端运行时间缩短约 40%。",
-                "统一算法侧与区域侧的预测数据结构；分区与谓词下推让单次查询扫描的数据量减少约 60%。",
+                "将 10+ 个独立 SQL 作业整合为基于依赖调度的 PySpark / Spark SQL（Hive）批处理链路，端到端耗时降低约 40%。",
+                "统一算法侧与区域侧的预测数据表结构，整合为“一次计算、多方复用”的数据模型；通过分区与谓词下推，单次查询扫描数据量减少约 60%。",
             ],
         },
         {
@@ -152,7 +150,7 @@ EXPERIENCE = {
             "when": "2025.03 – 06",
             "where": "加拿大",
             "bullets": [
-                "为 1 万多条案件记录搭建 Excel VBA 与 Power Query 分析流程：按规则去重、识别案件处于 open / closed / reopened 哪种状态、自动汇总，报告效率提升约 25%。",
+                "为 1 万多条案件记录搭建 Excel VBA + Power Query 分析流程：按规则去重、识别案件处于 open / closed / reopened 哪种状态、自动汇总，报告效率提升约 25%。",
                 "用 MySQL 分析 1,000 多家门店三年的销售数据，找出季节性规律和毛利高峰，并用 Power BI 做出按门店、供应商、经理拆分的看板。",
             ],
         },
@@ -182,7 +180,7 @@ ABOUT = {
     "en": {
         "eyebrow": "About",
         "h1": "I keep moving closer to the machine.",
-        "p1": "I studied Computing and Commerce at Queen’s (honours, 2022–2026), then worked at Shopee on the PySpark and Hive layer behind logistics forecasting. I am now in the M.S.E. programme in Electrical Engineering at the University of Pennsylvania (2026–2028), moving further into systems and hardware.",
+        "p1": "I studied Computing and Commerce at Queen’s (honours, 2022–2026), and spent the summer of 2025 at Shopee on the PySpark and Hive layer behind logistics forecasting. I am now in the M.S.E. program in Electrical Engineering at the University of Pennsylvania (2026–2028), moving further into systems and hardware.",
         "p2": "The projects here range from multi-GPU inference and cache-aware routing to C++ storage experiments and small local models. They look different, but I keep returning to the same question: what is happening underneath the abstraction, and how can I make it observable? This semester that question is extending into hardware through firmware, SoC architecture and VLSI.",
         "h2_why": "Why I build",
         "why_build": [
@@ -225,19 +223,19 @@ ABOUT = {
     "zh": {
         "eyebrow": "关于",
         "h1": "我一直在往系统更底层走。",
-        "p1": "我在皇后大学读商科与计算机科学双学位（荣誉，2022–2026），之后在虾皮做物流预测背后的 PySpark / Hive 数据链路。现在在宾夕法尼亚大学读电子工程硕士（M.S.E.，2026–2028），继续往系统和硬件深入。",
-        "p2": "网站上的项目跨度不小：多 GPU 推理、缓存路由、C++ 存储实验，还有本地运行的小模型。但我反复在追的其实是同一件事：一层抽象下面到底发生了什么，怎样才能把它真正观察出来。这学期，这个问题也延伸到了硬件这一侧：固件、SoC 架构和 VLSI。",
+        "p1": "我在女王大学读商科与计算机科学双学位（荣誉，2022–2026），2025 年夏天在虾皮做物流预测背后的 PySpark / Hive 数据链路。现在在宾夕法尼亚大学读电子工程硕士（M.S.E.，2026–2028），继续往系统和硬件深入。",
+        "p2": "网站上的项目跨度不小：多 GPU 推理、缓存路由、C++ 存储实验，还有本地运行的小模型。但我反复在追的其实是同一件事：一层抽象下面到底发生了什么，又怎样才能让它变得可观测、可测量。这学期，这个问题也延伸到了硬件这一侧：固件、SoC 架构和 VLSI。",
         "h2_why": "我为什么做这些",
         "why_build": [
             "我最早对计算机感兴趣，是因为日常用的软件会让我好奇：这些功能到底是怎么做出来的？让我一直学下去的，是写代码带来的直接反馈——改一点，再运行一次，屏幕上或者真实设备的行为就跟着变了。这也是我一开始就在商科之外加修计算机的原因。",
-            "我也不太愿意把同一件事手动做两遍。在方正证券和 Brix，我把重复出现的报告做成了可以复用的工具；现在，是去测量更底层的系统：RadixGates 里，一条通过了全部模拟测试的路由规则，放到真实的 llama.cpp 上反而降低了缓存命中率，这个结果我同样留在了文章里。",
+            "我也不太愿意把同一件事手动做两遍。在方正证券和 Brix，我把重复出现的报告做成了可复用的工具；现在，我把同样的习惯用在更底层的系统上——RadixGates 里，一条通过了全部模拟测试的路由规则，放到真实的 llama.cpp 上反而拉低了 prefix cache 命中率，这个结果我原样写进了笔记。",
         ],
         "h2_approach": "我做项目的方式",
         "principles": [
-            "<strong>从一个要做的决定出发。</strong> 文本转 SQL 那个项目问的是：一个小模型能不能作为自主作答系统上线？答案是写成一个决定，不是一个分数。",
+            "<strong>从要做的决策出发。</strong> 文本转 SQL 这个项目要回答的是：小模型能不能作为自主作答系统上线？结论写成一个决策，而不是一个分数。",
             "<strong>把验收标准写下来，并说明它们从哪来。</strong> 我的验收标准是我自己设的假设，README 里写明了这一点。",
-            "<strong>数字要带着它成立的条件。</strong> “611 毫秒 p95” 指的是 Apple M1、一次一个请求；四个并发时是 1.4 秒。",
-            "<strong>说清楚什么会推翻这个结论。</strong> 每个仓库结尾都写了它的局限，路由那个结果的关键就在缓存有多大。",
+            "<strong>数字要带着它成立的条件。</strong> “p95 611 ms”指的是 Apple M1 上单请求串行的结果；4 并发时是 1.4 s。",
+            "<strong>说清楚什么会推翻这个结论。</strong> 每个仓库的结尾都写了局限；路由这个结论是否成立，取决于缓存容量有多大。",
         ],
         "see_note": "看这篇笔记。",
         "h2_outside": "工作之外",
@@ -248,7 +246,7 @@ ABOUT = {
             {"icon": "draw", "label": "画画", "trait": "留意细节 · 十年",
              "note": "画画让我在下笔之前，先看清一个东西是怎么构成的。"},
             {"icon": "book", "label": "阅读", "trait": "想象力",
-             "note": "《哈利·波特》这样的世界，我愿意一头扎进去，也很憧憬去那里冒险。它让我脑子里想象力的那一面一直有在用。"},
+             "note": "《哈利·波特》这样的世界，我愿意一头扎进去，也很憧憬去那里冒险。读它，我的想象力也一直有地方用。"},
             {"icon": "badminton", "label": "羽毛球", "trait": "保持活力",
              "note": "休闲打。让自己动起来，也让大脑从长时间伏案里歇一歇。"},
             {"icon": "build", "label": "LEGO", "trait": "享受过程",
@@ -258,7 +256,7 @@ ABOUT = {
         
         "facts_label": "基本信息",
         "f_now": "现在", "f_now_v": "宾夕法尼亚大学电子工程硕士（M.S.E.）在读",
-        "f_before": "之前", "f_before_v": "皇后大学商科与计算机科学双学位（荣誉）",
+        "f_before": "之前", "f_before_v": "女王大学商科与计算机科学双学位（荣誉）",
         "f_looking": "求职方向", "f_looking_v": "2027 年暑期实习：AI 基础设施；嵌入式与软硬件系统",
         "f_code": "代码",
         "f_linkedin": "领英",
@@ -277,22 +275,24 @@ NOT_FOUND = {
     "zh": {"eyebrow": "404", "h1": "这个页面不存在", "body": "试试", "home": "首页", "or": "或者", "notes_word": "笔记"},
 }
 
-# Chinese titles/summaries for the note cards on /zh/. The notes themselves stay English-only.
-NOTES_ZH = {
-    "simulation-cannot-see-a-cache": {
-        "title": "模拟测试看不见缓存",
-        "summary": "网关的故障测试全部通过，但我加的一条路由规则，在真实引擎上还是把前缀缓存命中率从 59% 拉低到了 24%。",
+
+NOTES_PAGE = {
+    "en": {
+        "eyebrow": "Notes",
+        "h1": "What a measurement taught me",
+        "lead": "Short notes on one thing each. The tables, raw data and limits are in the repositories they link to.",
+        "description": "Short notes on what a measurement taught me.",
+        "newer": "Newer",
+        "older": "Older",
+        "more": "More notes",
     },
-    "wrong-answers-that-raise-no-error": {
-        "title": "不报错的错误答案",
-        "summary": "微调后的 0.5B 模型写对 SQL 的比例约 83%。真正让我担心的是另外那 16%：能正常运行，却返回了错误的行。",
-    },
-    "same-weights-different-dtype": {
-        "title": "权重相同，数据类型不同",
-        "summary": "微调模型只有 27.6% 的字节和基础模型一致，起决定作用的是数据编码，而不是分块器。",
-    },
-    "average-chunk-size-is-not-the-cost": {
-        "title": "平均块大小并不等于一次修改的代价",
-        "summary": "一次修改更可能落在大块里，所以块大小的分布和它的平均值同样重要。",
+    "zh": {
+        "eyebrow": "笔记",
+        "h1": "一次测量教会了我什么",
+        "lead": "每篇只讲一件事。表格、原始数据和各项限制，都在它们所链接的仓库里。",
+        "description": "每篇讲一件事：一次测量教会了我什么。",
+        "newer": "较新",
+        "older": "较早",
+        "more": "更多笔记",
     },
 }
