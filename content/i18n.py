@@ -44,7 +44,7 @@ HOME = {
         "evidence_label": "看实测数据",
         "measured_label": "实测",
         "judgment_label": "判断",
-        "exp_title": "经历",
+        "exp_title": "实习经历",
         "notes_title": "笔记",
         "now_title": "现在",
         "now_body": "这学期在宾大修：<strong>Smart Devices</strong>（ATmega328PB 裸机 C）、<strong>SoC 架构</strong>（在 Ultra96 上做性能剖析）、<strong>数字集成电路与 VLSI</strong>。",
@@ -115,7 +115,7 @@ EXPERIENCE = {
             ],
         },
         {
-            "role": "Investment Analyst",
+            "role": "Investment Analyst Intern",
             "org": "CITIC Securities",
             "when": "Jun – Sep 2024",
             "where": "Beijing, China",
@@ -157,7 +157,7 @@ EXPERIENCE = {
             ],
         },
         {
-            "role": "投资分析师",
+            "role": "投资分析实习生",
             "org": "中信证券",
             "when": "2024.06 – 09",
             "where": "中国北京",
