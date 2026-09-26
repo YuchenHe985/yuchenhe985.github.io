@@ -211,7 +211,7 @@ ABOUT = {
             {"icon": "build", "label": "LEGO", "trait": "Enjoying the process",
              "note": "I care about the building, not the display: the point where separate pieces start to fit together."},
         ],
-        "outside_close": "None of this is on my CV, but the habits carry over: staying with something for years, looking closely, and caring about the process as much as the result.",
+        "outside_close": "The habits carry over to my work: staying with something for years, looking closely, and caring about the process as much as the result.",
         
         "facts_label": "Facts",
         "f_now": "Now", "f_now_v": "M.S.E. Electrical Engineering, Penn",
@@ -254,7 +254,7 @@ ABOUT = {
             {"icon": "build", "label": "LEGO", "trait": "享受过程",
              "note": "我在意的是一块块拼起来的过程，不是摆出来的成品：零散的部分开始咬合的那一刻。"},
         ],
-        "outside_close": "这些不在我的简历上，但留下来的习惯会带进工作：能长期坚持一件事，愿意看仔细，也在意过程本身，而不只是结果。",
+        "outside_close": "这些习惯也会带进工作：能长期坚持一件事，愿意看仔细，也在意过程本身，而不只是结果。",
         
         "facts_label": "基本信息",
         "f_now": "现在", "f_now_v": "宾夕法尼亚大学电子工程硕士（M.S.E.）在读",
