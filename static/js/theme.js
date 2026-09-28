@@ -1,18 +1,31 @@
-// Three-state theme switch: system (no attribute) -> light -> dark -> system.
+// Three-state theme switch: system -> light -> dark -> system, localized to the page language.
 (function () {
   var root = document.documentElement;
   var button = document.getElementById("theme-toggle");
   if (!button) return;
+
   var order = ["system", "light", "dark"];
+  var zh = root.lang === "zh";
+  var labels = zh
+    ? { system: "跟随系统", light: "浅色", dark: "深色" }
+    : { system: "System", light: "Light", dark: "Dark" };
+
   function current() {
     var t = root.getAttribute("data-theme");
     return t === "light" || t === "dark" ? t : "system";
   }
+
   function show() {
     var name = current();
-    button.textContent = name.charAt(0).toUpperCase() + name.slice(1);
-    button.setAttribute("aria-label", "Color theme: " + name + ". Activate to change.");
+    button.textContent = labels[name];
+    button.setAttribute(
+      "aria-label",
+      zh
+        ? "当前配色：" + labels[name] + "。点击切换。"
+        : "Color theme: " + name + ". Activate to change."
+    );
   }
+
   button.addEventListener("click", function () {
     var next = order[(order.indexOf(current()) + 1) % order.length];
     if (next === "system") root.removeAttribute("data-theme");
@@ -23,5 +36,6 @@
     } catch (e) {}
     show();
   });
+
   show();
 })();
