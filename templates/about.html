@@ -8,6 +8,19 @@
       <p>{{ t.p1 }}</p>
       <p>{{ t.p2 }}</p>
 
+      <div class="journey" aria-label="{{ t.journey_title }}">
+        <h2>{{ t.journey_title }}</h2>
+        <ol class="journey-list">
+          {% for step in t.journey %}
+          <li>
+            <span class="journey-dot" aria-hidden="true"></span>
+            <strong>{{ step.label }}</strong>
+            <span>{{ step.detail }}</span>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+
       <h2>{{ t.h2_why }}</h2>
       {% for para in t.why_build %}<p>{{ para }}</p>{% endfor %}
 

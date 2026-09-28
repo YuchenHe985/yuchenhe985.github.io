@@ -26,7 +26,7 @@ def hbars(rows, *, vmax, ticks, unit, label, caption, compact=False, mark_label=
         if position is not None:
             mark = f'<i class="mark" style="--p:{position / vmax * 100:.2f}%"></i>'
         out.append(
-            '<div class="chart-row">'
+            f'<div class="chart-row" tabindex="0" aria-label="{escape(row["label"])}: {_fmt(row["value"], unit)}">'
             f'<span class="chart-label">{escape(row["label"])}{sub}</span>'
             f'<div class="chart-track" aria-hidden="true"><i class="bar bar-{row.get("kind", "neutral")}" '
             f'style="--w:{row["value"] / vmax * 100:.2f}%"></i>{mark}</div>'
