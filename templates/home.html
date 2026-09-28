@@ -20,11 +20,27 @@
   </div>
 </section>
 
+<section class="section wrap capabilities" aria-labelledby="capabilities-title">
+  <div class="section-head-inline">
+    <h2 id="capabilities-title" class="section-title">{{ t.cap_title }}</h2>
+  </div>
+  <div class="capability-grid">
+    {% for c in t.capabilities %}
+    <article class="capability-card">
+      <p class="capability-index">0{{ loop.index }}</p>
+      <h3>{{ c.name }}</h3>
+      <p class="capability-body">{{ c.body }}</p>
+      <p class="capability-proof">{{ c.proof }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
 <section id="work" class="section wrap">
   <h2 class="section-title">{{ t.work_title }}</h2>
   <ol class="work">
     {% for w in work %}
-    <li class="work-row">
+    <li class="work-row{% if w.featured %} is-featured{% endif %}">
       <p class="kind">{{ w.kind }}</p>
       <div class="work-main">
         <h3>{{ w.name }}{% if w.featured %}<span class="badge">{{ t.featured_label }}</span>{% endif %}</h3>
@@ -92,13 +108,16 @@
 
 {% if notes %}
 <section class="section wrap">
+  <p class="section-kicker">{{ t.notes_kicker }}</p>
   <h2 class="section-title">{{ t.notes_title }}</h2>
-  <ol class="posts">
+  <ol class="field-notes">
     {% for n in notes %}
-    <li>
+    <li class="field-note">
+      <span class="field-note-no">0{{ loop.index }}</span>
       <div>
         <h3><a href="{{ n.url }}">{{ n.title }}</a></h3>
         <p>{{ n.summary }}</p>
+        <a class="field-note-link" href="{{ n.url }}">{{ "阅读全文 →" if lang == "zh" else "Read note →" }}</a>
       </div>
     </li>
     {% endfor %}
@@ -109,5 +128,16 @@
 <section class="section wrap now">
   <h2 class="section-title">{{ t.now_title }}</h2>
   <p>{{ t.now_body | safe }} <a href="{{ '/zh/about/' if lang == 'zh' else '/about/' }}">{{ t.now_link }}</a></p>
+</section>
+
+<section class="wrap final-cta" aria-label="{{ t.final_title }}">
+  <div>
+    <h2>{{ t.final_title }}</h2>
+    <p>{{ t.final_body }}</p>
+  </div>
+  <div class="final-cta-actions">
+    <a class="button" href="mailto:{{ site.email }}">{{ t.final_email }}</a>
+    <a class="text-link" href="{{ site.linkedin }}">LinkedIn</a>
+  </div>
 </section>
 {% endblock %}
