@@ -43,7 +43,7 @@ HOME = {
         "final_email": "Email Yuchen",
     },
     "zh": {
-        "eyebrow": "宾大电子工程 · Queen’s 商科 + 计算机",
+        "eyebrow": "宾大电子工程 M.S.E. · Queen’s 商科 + 计算机双学位",
         "h1": "我做 AI 模型背后的系统，也在继续往软硬件交界处走。",
         "lead": "从多 GPU 推理、本地模型和系统代码，到这学期的固件与 SoC，我喜欢先把系统真正跑起来，再用实验把瓶颈、故障和取舍拆清楚。",
         "seeking": "寻找 2027 年暑期实习：AI 基础设施，或嵌入式 / 软硬件系统方向。",
@@ -65,7 +65,7 @@ HOME = {
         "capabilities": [
             {"name": "AI 基础设施", "body": "多 GPU 推理、请求路由、prefix cache 行为与 serving 评测。", "proof": "RadixGates · SGLang · llama.cpp · Docker"},
             {"name": "系统与性能", "body": "C++ / Go 系统编程、并发、存储与性能测量。", "proof": "cdc-chunker · 8 线程 7.4 GB/s"},
-            {"name": "嵌入式 / 软硬件", "body": "目前在宾大继续补深裸机 C、SoC 性能剖析和数字 IC 基础。", "proof": "ATmega328PB · Ultra96 · VLSI"},
+            {"name": "嵌入式 / 软硬件", "body": "目前在宾大进一步学习裸机 C、SoC 性能剖析，以及数字 IC / VLSI。", "proof": "ATmega328PB · Ultra96 · VLSI"},
             {"name": "数据工程", "body": "PySpark / Hive 数据链路、SQL、数据质量与运行监控。", "proof": "Shopee · 整合 10+ SQL 作业"},
         ],
         "notes_kicker": "实验笔记",
@@ -216,7 +216,7 @@ ABOUT = {
         ],
         "h2_why": "Why I build",
         "why_build": [
-            "I first became interested in computing because ordinary software made me wonder what was happening underneath. What kept me there was the feedback: change the code, run it again, and something on the screen, or on a physical device, behaves differently. It is why I added Computing to Commerce from the start.",
+            "I first became interested in computing because ordinary software made me wonder what was happening underneath. What kept me there was the feedback: change the code, run it again, and something on the screen, or on a physical device, behaves differently. That feedback is part of why I chose to study Computing alongside Commerce.",
             "I also dislike doing the same thing twice by hand. At Founder Securities and Brix that meant turning recurring reports into reusable tools. Now it means measuring the systems underneath: in RadixGates, a routing rule passed every simulated test but cut the cache hit rate on real llama.cpp workers, and that result stayed in the write-up.",
         ],
         "h2_approach": "How I approach a project",
@@ -267,7 +267,7 @@ ABOUT = {
         ],
         "h2_why": "我为什么做这些",
         "why_build": [
-            "我最早对计算机感兴趣，是因为日常用的软件会让我好奇：这些功能到底是怎么做出来的？让我一直学下去的，是写代码带来的直接反馈——改一点，再运行一次，屏幕上或者真实设备的行为就跟着变了。这也是我一开始就在商科之外加修计算机的原因。",
+            "我最早对计算机感兴趣，是因为日常用的软件会让我好奇：这些功能到底是怎么做出来的？让我一直学下去的，是写代码带来的直接反馈——改一点，再运行一次，屏幕上或者真实设备的行为就跟着变了。这也是我后来选择把计算机和商科一起读下去的原因之一。",
             "我也不太愿意把同一件事手动做两遍。在方正证券和 Brix，我把重复出现的报告做成了可复用的工具；现在，我把同样的习惯用在更底层的系统上——RadixGates 里，一条通过了全部模拟测试的路由规则，放到真实的 llama.cpp 上反而拉低了 prefix cache 命中率，这个结果我原样写进了笔记。",
         ],
         "h2_approach": "我做项目的方式",
