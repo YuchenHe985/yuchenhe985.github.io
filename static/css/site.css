@@ -824,3 +824,26 @@ td { padding: 0.6rem 0.9rem 0.6rem 0; border-bottom: 1px solid var(--line); vert
   .final-cta-actions { justify-content: flex-start; }
   .work-row.is-featured { margin-inline: 0; }
 }
+
+
+/* Keep navigation available on a long recruiting page without turning it into app chrome. */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--ground) 90%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+@supports not (background: color-mix(in srgb, white 90%, transparent)) {
+  .topbar { background: var(--ground); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .capability-card {
+    transition: background-color 0.18s ease;
+  }
+  .capability-card:hover {
+    background: var(--surface);
+  }
+}
