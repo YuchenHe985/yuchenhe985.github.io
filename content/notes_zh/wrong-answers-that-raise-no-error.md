@@ -1,7 +1,7 @@
 ---
 slug: wrong-answers-that-raise-no-error
 title: 不报错的错误答案
-order: 2
+order: 4
 summary: 微调后的 0.5B 模型写对 SQL 的比例是 82.6%。真正让我担心的是另外那 16.4%：能正常执行，返回的却是错误的结果。
 ---
 

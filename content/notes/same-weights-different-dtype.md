@@ -1,7 +1,7 @@
 ---
 slug: same-weights-different-dtype
 title: Same weights, different dtype
-order: 3
+order: 5
 summary: Only 27.6% of a fine-tuned model's bytes match its base, and the encoding mattered more than the chunker.
 ---
 

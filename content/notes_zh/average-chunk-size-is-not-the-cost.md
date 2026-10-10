@@ -1,7 +1,7 @@
 ---
 slug: average-chunk-size-is-not-the-cost
 title: 平均块大小并不等于一次修改的代价
-order: 4
+order: 6
 summary: 一次修改更可能落在大块里，所以块大小的分布和它的平均值同样重要。
 ---
 

@@ -1,7 +1,7 @@
 ---
 slug: wrong-answers-that-raise-no-error
 title: The wrong answers that raise no error
-order: 2
+order: 4
 summary: A fine-tuned 0.5B model writes the right SQL 82.6% of the time. What worries me is the 16.4% that runs cleanly and returns the wrong rows.
 ---
 
