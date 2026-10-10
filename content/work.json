@@ -69,6 +69,50 @@
     "note": "same-weights-different-dtype"
   },
   {
+    "kind": "Backend",
+    "name": "conference-ops",
+    "question": "When sixty people book the last ten seats at the same moment, and clients retry after timeouts, can a booking service stay exactly right?",
+    "figure": "60 → 10",
+    "condition": "simultaneous registrations for 10 seats: exactly 10 confirmed, 50 waitlisted, counter equal to the rows (real PostgreSQL 16)",
+    "stack": [
+      "Java 17",
+      "Spring Boot",
+      "PostgreSQL",
+      "Flyway",
+      "Docker"
+    ],
+    "measured": "25 integration tests over real HTTP and PostgreSQL; with the row lock removed, the 60-request test fails, so it really detects the race.",
+    "judgment": "Room and speaker double-booking is stopped by PostgreSQL exclusion constraints, not a check-then-insert in Java, which two requests at the same moment could slip past.",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/conference-ops"
+      }
+    ]
+  },
+  {
+    "kind": "Data",
+    "name": "review-pipeline",
+    "question": "How much does a careless train/test split flatter a model that predicts which reviews readers will find helpful?",
+    "figure": "4.6×",
+    "condition": "R² overstated by a random split (0.280) against a time split (0.061), 494K Amazon reviews, 97,798 held out",
+    "stack": [
+      "Python",
+      "DuckDB",
+      "Parquet",
+      "XGBoost",
+      "pytest"
+    ],
+    "measured": "Data contracts with line-numbered quarantine and idempotent, content-addressed stages; a clean run takes about 45 s and a rerun reproduces the same outputs.",
+    "judgment": "The honest model is weak overall but useful where it counts: its top 10% of new reviews are helpful 50.0% of the time, 2.13× the 23.4% base rate.",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/review-pipeline"
+      }
+    ]
+  },
+  {
     "kind": "Tooling",
     "name": "llm-serving-eval-kit",
     "question": "Given a model and some GPUs, how many do you need, why did the server not start, and are two benchmark runs even comparable?",
