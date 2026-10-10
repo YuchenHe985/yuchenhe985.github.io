@@ -1,7 +1,7 @@
 ---
 slug: same-weights-different-dtype
 title: 权重相同，dtype 不同
-order: 5
+order: 3
 summary: 微调模型只有 27.6% 的字节和基础模型一致，起决定作用的是 dtype 编码，而不是分块器。
 ---
 

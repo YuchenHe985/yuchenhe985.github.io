@@ -1,7 +1,7 @@
 ---
 slug: average-chunk-size-is-not-the-cost
 title: Average chunk size isn't what an edit costs
-order: 6
+order: 4
 summary: An edit is more likely to land in a big chunk, so the spread of chunk sizes matters as much as their average.
 ---
 

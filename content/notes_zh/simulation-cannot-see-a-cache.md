@@ -1,7 +1,7 @@
 ---
 slug: simulation-cannot-see-a-cache
 title: 模拟测试看不见缓存
-order: 3
+order: 1
 summary: 网关的故障测试全部通过，但我加的一条路由规则，在真实引擎上还是把 prefix cache 命中率从 59.1% 拉低到了 24.4%。
 ---
 
