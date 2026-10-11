@@ -113,6 +113,28 @@
     ]
   },
   {
+    "kind": "Desktop",
+    "name": "budget-manager",
+    "question": "When a bank's CSV has one bad row on line 4,000, can an import leave the ledger half written, and can restoring the wrong backup file destroy the real one?",
+    "figure": "0 rows",
+    "condition": "rows left in the ledger after importing a CSV that contains one bad row: the whole file is rejected (tested)",
+    "stack": [
+      "Java 17",
+      "JavaFX",
+      "SQLite",
+      "JUnit 5",
+      "Gradle"
+    ],
+    "measured": "40 JUnit tests; line coverage is 97% in the domain layer and 92% in the services; a schema upgrade from V1 to V2 keeps existing rows, and a failing migration leaves the database at the previous version.",
+    "judgment": "Money is a count of cents and the needs/wants/savings split uses the largest-remainder method, so the parts always add back to the income to the cent; a damaged backup is refused before anything is replaced.",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/budget-manager"
+      }
+    ]
+  },
+  {
     "kind": "Tooling",
     "name": "llm-serving-eval-kit",
     "question": "Given a model and some GPUs, how many do you need, why did the server not start, and are two benchmark runs even comparable?",
