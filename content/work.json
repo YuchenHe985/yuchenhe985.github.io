@@ -25,6 +25,27 @@
     "featured": true
   },
   {
+    "kind": "GPU kernels",
+    "name": "lowbit-kernels",
+    "question": "4-bit projection weights move about 4× fewer bytes than FP16. On a Tesla T4, how much of that becomes decode speed, at what cost in quality, and where does it stop paying?",
+    "figure": "1.37–2.01×",
+    "condition": "CUDA-graph decode throughput of INT4 vs FP16, Qwen2.5-Instruct 0.5B–3B at batch 1 (Tesla T4); 3B peak memory 7.85 → 3.64 GB",
+    "stack": [
+      "CUDA C++",
+      "Tensor Cores (mma.sync)",
+      "PyTorch extension",
+      "CUDA Graphs"
+    ],
+    "measured": "A GEMV ladder from one thread per row to multi-row warp tiling reached up to 75% of measured DRAM bandwidth; at batch 1 the deployed kernel takes 0.43–0.74× the time FP16 needs just to stream its weights. A tensor-core kernel and a dispatch rule from a 12-shape × 1–1,024-row sweep cover larger batches on one weight copy. Per-group clip search took 3B perplexity from 15.20 (absmax) to 10.83 (FP16 9.56).",
+    "judgment": "Eager decode was 0.84–0.85× FP16 although the INT4 GPU work was shorter: host launch overhead set the pace, and only CUDA graphs let the kernel gain show. Prefill still dequantizes to cuBLAS, so time to first token rises; INT4 wins only up to about 8–32 rows.",
+    "links": [
+      {
+        "label": "Repository",
+        "href": "https://github.com/YuchenHe985/lowbit-kernels"
+      }
+    ]
+  },
+  {
     "kind": "Fine-tuning",
     "name": "llm-finetune-lab",
     "question": "Can a 0.5B model fine-tuned with LoRA answer questions about a database, on a laptop, without the data leaving it?",
@@ -67,6 +88,54 @@
       }
     ],
     "note": "same-weights-different-dtype"
+  },
+  {
+    "kind": "FPGA",
+    "name": "FPGA matmul (HLS)",
+    "question": "Can a 64×64 matrix multiply on the Ultra96's FPGA beat the Cortex-A53 on the same board, and how big must the problem be before offload pays?",
+    "figure": "II=4 → 1",
+    "condition": "initiation interval at 150 MHz, from one result every 4 cycles to every cycle (64×64 FP32, C/RTL co-simulation passed)",
+    "stack": [
+      "Vitis HLS",
+      "C/RTL co-sim",
+      "OpenCL",
+      "Ultra96"
+    ],
+    "measured": "The stall was the memory read ports (2,048 bits/cycle needed); complete array partitioning reached II=1 in 320/360 DSPs and 49% BRAM. On the board: 0.496 ms per kernel vs 0.570 ms on the -O3 A53 (1.15×).",
+    "judgment": "With 110 ms of OpenCL setup counted, break-even is N ≈ 395 and 10× needs N ≈ 1,112: offload only pays for larger or batched problems.",
+    "links": []
+  },
+  {
+    "kind": "Multicore / SIMD",
+    "name": "Cortex-A53 pipeline",
+    "question": "How should a four-stage video pipeline be split across two A53 cores to get close to 2×?",
+    "figure": "1.83×",
+    "condition": "four-stage video pipeline, 53.2 → 97.4 frames/s, output bit-exact (Ultra96, two cores)",
+    "stack": [
+      "C/C++",
+      "std::thread",
+      "ARM NEON",
+      "Ultra96"
+    ],
+    "measured": "Pipeline split at a point chosen from measured stage latency: 1.83×, vs 1.16× for row-split data parallelism (the compressor itself is sequential). A hand-written NEON kernel ran 1.34× over -O3 scalar.",
+    "judgment": "Profiling on the target changed the plan: compression was 55% of x86 runtime, but on the A53 the filters and compression took 28–29% each, capping any single-stage speedup near 1.4×.",
+    "links": []
+  },
+  {
+    "kind": "Firmware",
+    "name": "AVR input capture",
+    "question": "When a timer overflow and an input capture arrive almost together, is the firmware's timestamp still right?",
+    "figure": "0 / 100M",
+    "condition": "wrong timestamps in 100 million random captures, for ISR latency under half a timer period (131 ms)",
+    "stack": [
+      "Embedded C",
+      "ATmega328PB",
+      "Timer1",
+      "UART"
+    ],
+    "measured": "A Timer1 input-capture ISR timestamps edges at 4 µs resolution; a 32-bit software count extends the 262 ms timer wrap; shared state is read through atomic snapshots.",
+    "judgment": "Compiling the firmware logic for the host with the AVR's interrupt ordering made the race testable at scale; without the wrap rule, about 8% of captures were off by a full period.",
+    "links": []
   },
   {
     "kind": "Backend",
