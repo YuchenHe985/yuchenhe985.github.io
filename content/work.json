@@ -36,8 +36,8 @@
       "PyTorch extension",
       "CUDA Graphs"
     ],
-    "measured": "A GEMV ladder from one thread per row to multi-row warp tiling reached up to 75% of measured DRAM bandwidth; at batch 1 the deployed kernel takes 0.43–0.74× the time FP16 needs just to stream its weights. A tensor-core kernel and a dispatch rule from a 12-shape × 1–1,024-row sweep cover larger batches on one weight copy. Per-group clip search took 3B perplexity from 15.20 (absmax) to 10.83 (FP16 9.56).",
-    "judgment": "Eager decode was 0.84–0.85× FP16 although the INT4 GPU work was shorter: host launch overhead set the pace, and only CUDA graphs let the kernel gain show. Prefill still dequantizes to cuBLAS, so time to first token rises; INT4 wins only up to about 8–32 rows.",
+    "measured": "A GEMV ladder from one thread per row to multi-row warp tiling reached up to 75% of measured DRAM bandwidth; at batch 1 the deployed kernel takes 0.43–0.74× the time FP16 needs just to stream its weights. A tensor-core kernel and a dispatch rule from a 12-shape × 1–1,024-row sweep cover larger batches on one weight copy. Per-group clip search took 3B perplexity from 15.20 (absmax) to 10.83 (FP16 9.56); across the three models INT4 perplexity stays 13–39% above FP16.",
+    "judgment": "Eager decode was 0.84–0.85× FP16 although the INT4 GPU work was shorter: host-side overhead set the pace, and CUDA Graph replay let the kernel gain show. Prefill still dequantizes to cuBLAS, so time to first token rises; against FP16 cuBLAS the INT4 path wins up to about 8–32 rows, depending on the layer.",
     "links": [
       {
         "label": "Repository",

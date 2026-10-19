@@ -118,8 +118,8 @@ WORK_ZH = {
         "condition": "INT4 对 FP16 的 CUDA Graph 解码吞吐，Qwen2.5-Instruct 0.5B–3B，batch 1（Tesla T4）；3B 峰值显存 7.85 → 3.64 GB",
         "repo_label": "仓库",
         "stack": ["CUDA C++", "Tensor Core（mma.sync）", "PyTorch 扩展", "CUDA Graphs"],
-        "measured": "GEMV 内核从每线程一行逐步优化到多行 warp 分块，最高达到实测显存带宽的 75%；batch 1 下部署内核耗时为 FP16 仅读一遍权重所需时间的 0.43–0.74 倍。Tensor Core 内核加上由 12 种层形状 × 1–1024 行扫描得出的分派策略覆盖更大批量，且只保留一份权重。逐组裁剪搜索把 3B 困惑度从 15.20（absmax）降到 10.83（FP16 为 9.56）。",
-        "judgment": "eager 模式下解码只有 FP16 的 0.84–0.85 倍，尽管 INT4 的 GPU 计算更短：瓶颈在 CPU 端的启动开销，只有用 CUDA Graph 才能让内核收益体现出来。prefill 仍反量化后调用 cuBLAS，首 token 时延会上升；INT4 只在约 8–32 行以内占优。",
+        "measured": "GEMV 内核从每线程一行逐步优化到多行 warp 分块，最高达到实测显存带宽的 75%；batch 1 下部署内核耗时为 FP16 仅读一遍权重所需时间的 0.43–0.74 倍。Tensor Core 内核加上由 12 种层形状 × 1–1024 行扫描得出的分派策略覆盖更大批量，且只保留一份权重。逐组裁剪搜索把 3B 困惑度从 15.20（absmax）降到 10.83（FP16 为 9.56）；三个模型的 INT4 困惑度仍比 FP16 高 13–39%。",
+        "judgment": "eager 模式下解码只有 FP16 的 0.84–0.85 倍，尽管 INT4 的 GPU 计算更短：瓶颈在 CPU 端开销，采用 CUDA Graph 重放后内核收益才体现出来。prefill 仍反量化后调用 cuBLAS，首 token 时延会上升；相对 FP16 cuBLAS，INT4 路径约在 8–32 行以内占优，具体取决于层形状。",
     },
     "llm-finetune-lab": {
         "kind": "模型微调",
