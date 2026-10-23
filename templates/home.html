@@ -39,7 +39,7 @@
 <section id="work" class="section wrap">
   <h2 class="section-title">{{ t.work_title }}</h2>
   <ol class="work">
-    {% for w in work %}
+    {% for w in work if not w.section %}
     <li class="work-row{% if w.featured %} is-featured{% endif %}">
       <p class="kind">{{ w.kind }}</p>
       <div class="work-main">
@@ -90,6 +90,31 @@
     {% endfor %}
   </ol>
 </section>
+
+{% set data_rows = work | selectattr("section") | list %}
+{% if data_rows %}
+<section id="data" class="section wrap">
+  <h2 class="section-title">{{ t.data_title }}</h2>
+  <ol class="work">
+    {% for w in data_rows %}
+    <li class="work-row">
+      <p class="kind">{{ w.kind }}</p>
+      <div class="work-main">
+        <h3>{{ w.name }}</h3>
+        <p>{{ w.question }}</p>
+      </div>
+      <p class="readout">
+        <span class="readout-figure">{{ w.figure }}</span>
+        <span class="readout-condition">{{ w.condition }}</span>
+      </p>
+      {% if w.stack %}
+      <p class="tags">{% for s in w.stack %}<span class="tag">{{ s }}</span>{% endfor %}</p>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</section>
+{% endif %}
 
 <section id="experience" class="section wrap">
   <h2 class="section-title">{{ t.exp_title }}</h2>
